@@ -74,7 +74,8 @@ h1 {
 
 /* Media Query: Mobile (up to 464px)*/
 @media only screen and (max-width: 29em) {
-  h1 {
+  h1,
+  .error__msg {
     font-size: 20px;
   }
 

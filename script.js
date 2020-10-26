@@ -7,9 +7,6 @@ let imagesLoaded = 0;
 let totalImages = 0;
 let photosArray = [];
 
-// Hide error message
-errorMsg.hidden = true;
-
 // Unsplash API
 let initialLoadCount = 30;
 const apiKey = '9LzNu9ijZaR0g-KmAtwcdRCckej8zL1l2iO829ZKBZo';
@@ -19,26 +16,27 @@ function updateAPIURLwithNewCount(imageCount) {
   apiURL = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${imageCount}`;
 }
 
-// Check if all images were loaded
-function imageLoaded() {
-  imagesLoaded++;
-
-  if (imagesLoaded === totalImages) {
-    ready = true;
-    loader.hidden = true;
-  }
-}
-
-// Helper function to set attributes on DOM elements
-function setAttributes(element, attributes) {
-  for (const key in attributes) {
-    element.setAttribute(key, attributes[key]);
+// Get photos from unsplash API
+async function getPhotos() {
+  let response;
+  try {
+    response = await fetch(apiURL);
+    photosArray = await response.json();
+    displayPhotos();
+    if (isInitialLoad) {
+      isInitialLoad = false;
+      updateAPIURLwithNewCount(30);
+    }
+    
+  } catch (error) {
+    // Catch error here
+    displayErrorMsg();
+    throw new Error(error);
   }
 }
 
 // For each photo, create elements for links & photos and add to DOM
 function displayPhotos() {
-  imagesLoaded = 0;
   totalImages = photosArray.length;
   console.log('total images =', totalImages);
   photosArray.forEach((photo) => {
@@ -70,43 +68,41 @@ function displayPhotos() {
   });
 }
 
-// Display error message if request throws an error
-function displayErrorMsg() {
-  errorMsg.hidden = false;
-  loader.hidden = true;
-}
+// Check if all images were loaded
+function imageLoaded() {
+  imagesLoaded++;
 
-// Get photos from unsplash API
-async function getPhotos() {
-  let response;
-  try {
-    response = await fetch(apiURL);
-    
-  } catch (error) {
-    // Catch error here
-    throw new Error(error);
-    displayErrorMsg();
-  }
-  if (response) {
-    photosArray = await response.json();
-    displayPhotos();
-    if (isInitialLoad) {
-      isInitialLoad = false;
-      updateAPIURLwithNewCount(30);
-    }
+  if (imagesLoaded === totalImages) {
+    ready = true;
+    loader.hidden = true;
   }
 }
 
 // When scrolling near the bottom of the page, load more photos
-window.addEventListener('scroll', (e) => {
+window.addEventListener('scroll', () => {
   if (
     window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000
     && ready
   ) {
+    imagesLoaded = 0;
     ready = false;
     getPhotos();
   }
 });
+
+// Helper function to set attributes on DOM elements
+function setAttributes(element, attributes) {
+  for (const key in attributes) {
+    element.setAttribute(key, attributes[key]);
+  }
+}
+
+// Display error message if request throws an error
+function displayErrorMsg() {
+  console.log('displaying error msg');
+  errorMsg.hidden = false;
+  loader.hidden = true;
+}
 
 // On load
 getPhotos();
