@@ -12,11 +12,19 @@
 
 <body>
   <!-- Title -->
-  <h1>Unsplash API - Infinite Scroll</h1>
+  <h1><i class="fas fa-camera-retro"></i> Infinite Images</h1>
 
   <!-- Loader -->
   <div class="loader" id="loader">
     <img src="loader.svg" alt="loader animation">
+  </div>
+
+  <!-- Error Message -->
+  <div class="error" id="error">
+    <div class="error__msg">
+      <p class="error__msg-text">Oops! Something went wrong. The API rate limit may have been exceeded. Please try again
+        later.</p>
+    </div>
   </div>
 
   <!-- Image Container -->
