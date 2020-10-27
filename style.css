@@ -51,7 +51,7 @@ h1 {
 }
 
 
-.image-container {
+.image-grid {
   margin: 0 auto;
   max-width: 1280px;
   display: grid;
@@ -64,11 +64,12 @@ h1 {
   align-items: start;
 }
 
-.image-container img {
+.image-grid img {
   width: 100%;
+  animation: fadeIn 1s ease-out;
 }
 
-.image-container .landscape {
+.image-grid .landscape {
   grid-column-end: span 2;
 }
 
@@ -79,10 +80,22 @@ h1 {
     font-size: 20px;
   }
 
-  .image-container {
+  .image-grid {
     margin: 10px;
     grid-template-columns: 100%;
     column-gap: 0;
     row-gap: 10px;
+  }
+}
+
+/* Animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(50%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

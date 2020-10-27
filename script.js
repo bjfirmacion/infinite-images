@@ -1,4 +1,4 @@
-const imageContainer = document.getElementById('image-container');
+const imageContainer = document.getElementById('image-grid');
 const loader = document.getElementById('loader');
 const errorMsg = document.getElementById('error');
 let ready = false;
