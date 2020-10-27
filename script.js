@@ -1,4 +1,4 @@
-const imageContainer = document.getElementById('image-grid');
+const imageGrid = document.getElementById('image-grid');
 const loader = document.getElementById('loader');
 const errorMsg = document.getElementById('error');
 let ready = false;
@@ -47,6 +47,10 @@ function displayPhotos() {
       target: '_blank'
     });
 
+    // Create <div> container for the image
+    const imageContainer = document.createElement('div');
+    imageContainer.classList.add('image-container');
+
     // Create <img> for photo
     const img = document.createElement('img');
     setAttributes(img, {
@@ -60,11 +64,17 @@ function displayPhotos() {
       item.classList.add('landscape');
     }
 
+    // Add portrait class for photos with portrait orientation
+    if (photo.width < photo.height) {
+      item.classList.add('portrait');
+    }
+
     img.addEventListener('load', imageLoaded);
 
-    // Put <img> inside <a>, then put <a> inside imageContainer element
-    item.appendChild(img);
-    imageContainer.appendChild(item);
+    // Put <img> inside <div> then inside <a>, then put <a> inside imageGrid element
+    imageContainer.appendChild(img);
+    item.appendChild(imageContainer);
+    imageGrid.appendChild(item);
   });
 }
 
